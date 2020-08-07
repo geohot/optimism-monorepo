@@ -6,13 +6,13 @@ import { JsonRpcProvider, Provider, TransactionReceipt } from 'ethers/providers'
 
 import * as SimpleStorageContract from '../build/SimpleStorage.json'
 
-describe('Test Sending Transactions Directly To L2', () => {
+describe.skip('Test Sending Transactions Directly To L2', () => {
   let wallet: Wallet
   let provider: Provider
   let simpleStorage: Contract
 
   before(async () => {
-    provider = new JsonRpcProvider('http://3.12.85.194:8545')
+    provider = new JsonRpcProvider('TODO: URL to node here')
     wallet = Wallet.createRandom().connect(provider)
 
     const factory = new ContractFactory(
