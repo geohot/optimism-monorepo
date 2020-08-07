@@ -1,11 +1,10 @@
 import './setup'
 
 /* External Imports */
-import {Contract, ContractFactory, Wallet} from 'ethers'
-import {JsonRpcProvider, Provider, TransactionReceipt} from 'ethers/providers'
+import { Contract, ContractFactory, Wallet } from 'ethers'
+import { JsonRpcProvider, Provider, TransactionReceipt } from 'ethers/providers'
 
 import * as SimpleStorageContract from '../build/SimpleStorage.json'
-
 
 describe('Test Sending Transactions Directly To L2', () => {
   let wallet: Wallet
@@ -25,7 +24,9 @@ describe('Test Sending Transactions Directly To L2', () => {
     const deployTx = factory.getDeployTransaction()
     deployTx.gasPrice = 0
     const res = await wallet.sendTransaction(deployTx)
-    const receipt: TransactionReceipt = await provider.waitForTransaction(res.hash)
+    const receipt: TransactionReceipt = await provider.waitForTransaction(
+      res.hash
+    )
     receipt.status.should.equal(1, `Deploy transaction failed`)
     simpleStorage = new Contract(
       receipt.contractAddress,
@@ -36,9 +37,14 @@ describe('Test Sending Transactions Directly To L2', () => {
 
   it('Sets storage 10 times', async () => {
     for (let i = 0; i < 10; i++) {
-      let res = await simpleStorage.setStorage('test', `test${i}`)
-      const receipt: TransactionReceipt = await provider.waitForTransaction(res.hash)
-      receipt.status.should.equal(1, `Transaction ${i} failed! ${JSON.stringify(receipt)}`)
+      const res = await simpleStorage.setStorage('test', `test${i}`)
+      const receipt: TransactionReceipt = await provider.waitForTransaction(
+        res.hash
+      )
+      receipt.status.should.equal(
+        1,
+        `Transaction ${i} failed! ${JSON.stringify(receipt)}`
+      )
 
       const setStorage = await simpleStorage.getStorage('test')
       setStorage.should.equal(`test${i}`, `Storage not set to test${i}`)

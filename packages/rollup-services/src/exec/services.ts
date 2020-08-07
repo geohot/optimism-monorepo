@@ -1,6 +1,12 @@
 /* External Imports */
 import { getLogger } from '@eth-optimism/core-utils'
-import {BaseDB, DB, EthereumBlockProcessor, getLevelInstance, PostgresDB} from '@eth-optimism/core-db'
+import {
+  BaseDB,
+  DB,
+  EthereumBlockProcessor,
+  getLevelInstance,
+  PostgresDB,
+} from '@eth-optimism/core-db'
 import { getContractDefinition } from '@eth-optimism/rollup-contracts'
 import {
   CalldataTxEnqueuedLogHandler,
@@ -97,13 +103,17 @@ export const runServices = async (): Promise<any[]> => {
     services.push(l1ChainDataPersister)
     const l1Processor: EthereumBlockProcessor = createL1BlockSubscriber()
     log.info(`Starting to sync L1 chain`)
-    subscriptions.push(l1Processor.subscribe(getL1Provider(), l1ChainDataPersister))
+    subscriptions.push(
+      l1Processor.subscribe(getL1Provider(), l1ChainDataPersister)
+    )
   }
   if (!!l2ChainDataPersister) {
     services.push(l2ChainDataPersister)
     const l2Processor: EthereumBlockProcessor = createL2BlockSubscriber()
     log.info(`Starting to sync L2 chain`)
-    subscriptions.push(l2Processor.subscribe(getL2Provider(), l2ChainDataPersister))
+    subscriptions.push(
+      l2Processor.subscribe(getL2Provider(), l2ChainDataPersister)
+    )
   }
 
   setInterval(() => {
@@ -323,13 +333,8 @@ const createL1BlockSubscriber = (): EthereumBlockProcessor => {
 }
 
 const createL2BlockSubscriber = (): EthereumBlockProcessor => {
-  return new EthereumBlockProcessor(
-    getL2Db(),
-    0,
-    1
-  )
+  return new EthereumBlockProcessor(getL2Db(), 0, 1)
 }
-
 
 /*********************
  * HELPER SINGLETONS *
